@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'rest_framework',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +122,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Upload media files to S3
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Django-storages settings (cf. https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html)   # noqa: E501
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config(
+    'AWS_STORAGE_BUCKET_NAME', default='trailmapper')
+
+# A path prefix that will be prepended to all uploads
+AWS_LOCATION = 'images'
+
+# Remove query parameter authentication from generated URLs
+AWS_QUERYSTRING_AUTH = False
